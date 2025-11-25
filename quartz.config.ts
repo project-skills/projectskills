@@ -4,19 +4,17 @@ import * as Plugin from "./quartz/plugins"
 /**
  * Quartz 4 Configuration
  *
- * See https://quartz.jzhao.xyz/configuration for more information.
+ * Документация: https://quartz.jzhao.xyz/configuration
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "Quartz 4",
+    pageTitle: "Навыки проектной деятельности",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "plausible",
-    },
-    locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
+    analytics: null, // Можно подключить метрику позже
+    locale: "ru-RU",
+    baseUrl: "project-skills.github.io/projectskills", // для GitHub Pages!
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
@@ -88,7 +86,7 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Comment out CustomOgImages to speed up build time
+      // Комментарий CustomOgImages ускоряет сборку, если не нужен social preview
       Plugin.CustomOgImages(),
     ],
   },
