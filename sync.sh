@@ -1,26 +1,20 @@
 #!/bin/bash
+# Синхронизация контента Project Skills
 
-# Пути
-VAULT_PATH="$HOME/Documents/_OBSIDIAN/projectskills"
-CONTENT_PATH="$HOME/Projects/quartz-projectskills/content"
+SOURCE="/Users/alex/Documents/_OBSIDIAN/projectskills/"
+DEST="$HOME/Projects/quartz-projectskills/content/"
 
-# Проверка существования вольта
-if [ ! -d "$VAULT_PATH" ]; then
-  echo "❌ Вольт не найден: $VAULT_PATH"
-  echo "📍 Проверьте путь командой: ls -la $VAULT_PATH"
-  exit 1
-fi
+echo "🔄 Синхронизация контента..."
+rsync -av --delete "$SOURCE" "$DEST"
 
-echo "📦 Синхронизация контента из Obsidian..."
-echo "🔗 Источник: $VAULT_PATH"
-echo "📂 Назначение: $CONTENT_PATH"
+echo "📦 Добавление в Git..."
+cd ~/Projects/quartz-projectskills
+git add .
 
-# Копирование с исключением служебных папок Obsidian
-rsync -av --delete \
-  --exclude='.obsidian/' \
-  --exclude='.trash/' \
-  --exclude='.DS_Store' \
-  "$VAULT_PATH/" "$CONTENT_PATH/"
+echo "💬 Коммит..."
+git commit -m "Обновление контента $(date '+%Y-%m-%d %H:%M')"
 
-echo "✅ Синхронизация завершена"
-echo "📊 Файлов в content/: $(find "$CONTENT_PATH" -type f -name "*.md" | wc -l)"
+echo "🚀 Публикация..."
+git push
+
+echo "✅ Готово! Сайт обновится через ~1 минуту."
