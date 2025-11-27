@@ -1,20 +1,16 @@
 #!/bin/bash
-# Синхронизация контента Project Skills
-
 SOURCE="/Users/alex/Documents/_OBSIDIAN/projectskills/"
 DEST="$HOME/Projects/quartz-projectskills/content/"
 
-echo "🔄 Синхронизация контента..."
 rsync -av --delete "$SOURCE" "$DEST"
 
-echo "📦 Добавление в Git..."
 cd ~/Projects/quartz-projectskills
 git add .
+git commit -m "Обновление $(date '+%Y-%m-%d %H:%M')"
 
-echo "💬 Коммит..."
-git commit -m "Обновление контента $(date '+%Y-%m-%d %H:%M')"
-
-echo "🚀 Публикация..."
-git push
-
-echo "✅ Готово! Сайт обновится через ~1 минуту."
+if git push; then
+    osascript -e 'display notification "Сайт обновлён! Проверьте Actions." with title "✅ Project Skills"'
+    open "https://github.com/project-skills/projectskills/actions"
+else
+    osascript -e 'display notification "Ошибка git push!" with title "❌ Project Skills" sound name "Basso"'
+fi
