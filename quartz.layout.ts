@@ -38,7 +38,29 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "Проводник",
+      folderDefaultState: "collapsed",
+      folderClickBehavior: "link",
+      useSavedState: true,
+      sortFn: (a, b) => {
+        // Сортировка по имени с учетом числовых префиксов
+        const nameA = a.displayName || a.name
+        const nameB = b.displayName || b.name
+        return nameA.localeCompare(nameB, "ru", { numeric: true })
+      },
+      filterFn: (node) => {
+        // Не показывать index.md файлы в навигации
+        return node.name !== "index"
+      },
+      mapFn: (node) => {
+        // Убираем числовые префиксы из отображения
+        if (node.displayName) {
+          node.displayName = node.displayName.replace(/^\d+_/, "")
+        }
+        return node
+      },
+    }),
   ],
   right: [
     Component.Graph(),
@@ -47,7 +69,7 @@ export const defaultContentPageLayout: PageLayout = {
   ],
 }
 
-// components for pages that display lists of pages  (e.g. tags or folders)
+// components for pages that display lists of pages (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
   beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
   left: [
@@ -62,7 +84,26 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer({
+      title: "Проводник",
+      folderDefaultState: "collapsed",
+      folderClickBehavior: "link",
+      useSavedState: true,
+      sortFn: (a, b) => {
+        const nameA = a.displayName || a.name
+        const nameB = b.displayName || b.name
+        return nameA.localeCompare(nameB, "ru", { numeric: true })
+      },
+      filterFn: (node) => {
+        return node.name !== "index"
+      },
+      mapFn: (node) => {
+        if (node.displayName) {
+          node.displayName = node.displayName.replace(/^\d+_/, "")
+        }
+        return node
+      },
+    }),
   ],
   right: [],
 }
