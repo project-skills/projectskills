@@ -57,6 +57,14 @@ export const defaultContentPageLayout: PageLayout = {
         // Убираем числовые префиксы из отображения
         if (node.displayName) {
           node.displayName = node.displayName.replace(/^\d+_/, "")
+              // Обработка обзорных страниц (index.md и _Обзор)
+    if (node.displayName && node.displayName.startsWith("index")) {
+      // Скрываем index.md файлы
+      node.displayName = ""
+    } else if (node.displayName && node.displayName.match(/^_[Оо]бзор/)) {
+      // Добавляем иконку к обзорным страницам и убираем префикс
+      node.displayName = "📋 " + node.displayName.replace(/^_[Оо]бзор - /, "")
+    }
         }
         return node
       },
@@ -100,6 +108,12 @@ export const defaultListPageLayout: PageLayout = {
       mapFn: (node) => {
         if (node.displayName) {
           node.displayName = node.displayName.replace(/^\d+_/, "")
+                // Обработка обзорных страниц
+      if (node.displayName && node.displayName.startsWith("index")) {
+        node.displayName = ""
+      } else if (node.displayName && node.displayName.match(/^_[Оо]бзор/)) {
+        node.displayName = "📋 " + node.displayName.replace(/^_[Оо]бзор - /, "")
+      }
         }
         return node
       },
