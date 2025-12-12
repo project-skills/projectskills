@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE="/Users/alex/Documents/OBSIDIAN/projectskills"
+SOURCE="/Users/alex/Documents/_OBSIDIAN/projectskills"
 QUARTZ_REPO="$HOME/Projects/quartz-projectskills"
 CONTENT="$QUARTZ_REPO/content"
 
