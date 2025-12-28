@@ -2,9 +2,8 @@ import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
 
 /**
- * Quartz 4 Configuration
- *
- * Документация: https://quartz.jzhao.xyz/configuration
+ * Quartz 4.0 Configuration
+ * https://quartz.jzhao.xyz/configuration
  */
 const config: QuartzConfig = {
   configuration: {
@@ -12,10 +11,16 @@ const config: QuartzConfig = {
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
-    analytics: null, // Можно подключить метрику позже
+    analytics: null,
     locale: "ru-RU",
-    baseUrl: "project-skills.github.io/projectskills", // для GitHub Pages!
-    ignorePatterns: ["private", "templates", ".obsidian"],
+    baseUrl: "project-skills.github.io/projectskills",
+    ignorePatterns: [
+      "private",
+      "templates",
+      ".obsidian",
+      "**/_*",           // Скрыть файлы, начинающиеся с _
+      "**/drafts/**",    // Скрыть черновики
+    ],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -64,30 +69,54 @@ const config: QuartzConfig = {
         },
         keepBackground: false,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
+      Plugin.ObsidianFlavoredMarkdown({ 
+        enableInHtmlEmbed: false,
+        parseArrows: true,
+        parseTags: true,
+        parseBlockReferences: true,
+      }),
       Plugin.GitHubFlavoredMarkdown(),
-      Plugin.TableOfContents(),
-      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
-      Plugin.Description(),
-      Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.TableOfContents({
+        maxDepth: 3,
+        minEntries: 2,
+        showByDefault: true,
+        collapseByDefault: false,
+      }),
+      Plugin.CrawlLinks({ 
+        markdownLinkResolution: "shortest",
+        prettyLinks: true,
+        openLinksInNewTab: false,
+      }),
+      Plugin.Description({
+        descriptionLength: 150,
+      }),
+      Plugin.Latex({ 
+        renderEngine: "katex" 
+      }),
     ],
-    filters: [Plugin.RemoveDrafts()],
+    filters: [
+      Plugin.RemoveDrafts(),
+    ],
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
       Plugin.ContentPage(),
-      Plugin.FolderPage(),
+      Plugin.FolderPage({
+        folderDefaultName: "index",
+        showFolderCount: true,
+      }),
       Plugin.TagPage(),
       Plugin.ContentIndex({
         enableSiteMap: true,
-        enableRSS: false, // <-- ключевая строка!
+        enableRSS: true,         // Включить RSS
+        rssLimit: 20,
+        rssFullHtml: false,
+        includeEmptyFiles: false,
       }),
       Plugin.Assets(),
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
-      // Комментарий CustomOgImages ускоряет сборку, если не нужен social preview
-      Plugin.CustomOgImages(),
     ],
   },
 }
