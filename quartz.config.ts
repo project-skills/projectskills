@@ -3,7 +3,8 @@ import * as Plugin from "./quartz/plugins"
 
 /**
  * Quartz 4.0 Configuration
- * https://quartz.jzhao.xyz/configuration
+ *
+ * See https://quartz.jzhao.xyz/configuration for more information.
  */
 const config: QuartzConfig = {
   configuration: {
@@ -14,13 +15,7 @@ const config: QuartzConfig = {
     analytics: null,
     locale: "ru-RU",
     baseUrl: "project-skills.github.io/projectskills",
-    ignorePatterns: [
-      "private",
-      "templates",
-      ".obsidian",
-      "**/_*",           // Скрыть файлы, начинающиеся с _
-      "**/drafts/**",    // Скрыть черновики
-    ],
+    ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -69,12 +64,7 @@ const config: QuartzConfig = {
         },
         keepBackground: false,
       }),
-      Plugin.ObsidianFlavoredMarkdown({ 
-        enableInHtmlEmbed: false,
-        parseArrows: true,
-        parseTags: true,
-        parseBlockReferences: true,
-      }),
+      Plugin.ObsidianFlavoredMarkdown({ enableInHtmlEmbed: false }),
       Plugin.GitHubFlavoredMarkdown(),
       Plugin.TableOfContents({
         maxDepth: 3,
@@ -82,7 +72,7 @@ const config: QuartzConfig = {
         showByDefault: true,
         collapseByDefault: false,
       }),
-      Plugin.CrawlLinks({ 
+      Plugin.CrawlLinks({
         markdownLinkResolution: "shortest",
         prettyLinks: true,
         openLinksInNewTab: false,
@@ -90,13 +80,9 @@ const config: QuartzConfig = {
       Plugin.Description({
         descriptionLength: 150,
       }),
-      Plugin.Latex({ 
-        renderEngine: "katex" 
-      }),
+      Plugin.Latex({ renderEngine: "katex" }),
     ],
-    filters: [
-      Plugin.RemoveDrafts(),
-    ],
+    filters: [Plugin.RemoveDrafts()],
     emitters: [
       Plugin.AliasRedirects(),
       Plugin.ComponentResources(),
@@ -108,17 +94,77 @@ const config: QuartzConfig = {
       Plugin.TagPage(),
       Plugin.ContentIndex({
         enableSiteMap: true,
-        enableRSS: true,         // Включить RSS
-        rssLimit: 20,
-        rssFullHtml: false,
+        enableRSS: true,
+        rss: {
+          rssLimit: 20,
+          rssFullHtml: false,
+        },
         includeEmptyFiles: false,
       }),
       Plugin.Assets(),
       Plugin.Static(),
-      Plugin.Favicon(),
       Plugin.NotFoundPage(),
     ],
   },
 }
+
+// Добавляем конфигурацию компонентов с кастомной сортировкой
+config.plugins.emitters.push(
+  Plugin.ComponentResources({
+    explorer: Plugin.Explorer({
+      title: "Проводник",
+      folderClickBehavior: "link",
+      folderDefaultState: "collapsed",
+      useSavedState: true,
+      
+      // Кастомная функция сортировки для папок
+      sortFn: (a, b) => {
+        // Определяем желаемый порядок папок верхнего уровня
+        const topLevelOrder = [
+          "Представление проекта",
+          "Суть проекта",
+          "Система понятий",
+          "Методы и подходы",
+          "Нормативная база и стандарты",
+          "Нормативная база",
+          "Юмор и мемы"
+        ];
+        
+        // Функция для определения приоритета элемента
+        const getPriority = (name) => {
+          if (!name) return 999;
+          
+          // Ищем точное совпадение
+          const exactIndex = topLevelOrder.indexOf(name);
+          if (exactIndex !== -1) return exactIndex;
+          
+          // Ищем частичное совпадение (нормализуем строки)
+          const normalized = name.toLowerCase().replace(/[:\s-]/g, '');
+          const partialIndex = topLevelOrder.findIndex(item => {
+            const itemNormalized = item.toLowerCase().replace(/[:\s-]/g, '');
+            return normalized.includes(itemNormalized) || 
+                   itemNormalized.includes(normalized);
+          });
+          
+          return partialIndex !== -1 ? partialIndex : 999;
+        };
+        
+        const aPriority = getPriority(a.name);
+        const bPriority = getPriority(b.name);
+        
+        // Если приоритеты разные — сортируем по ним
+        if (aPriority !== bPriority) {
+          return aPriority - bPriority;
+        }
+        
+        // Для подпапок и файлов внутри — сортировка по алфавиту (с поддержкой русского)
+        return a.name.localeCompare(b.name, 'ru', { 
+          numeric: true, 
+          sensitivity: 'base' 
+        });
+      }
+    }),
+  })
+);
 
 export default config
