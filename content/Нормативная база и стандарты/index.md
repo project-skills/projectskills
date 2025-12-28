@@ -5,6 +5,8 @@ tags:
   - Индекс
   - Навигация
   - Стандарты
+hideInFolderListing: "true"
+enableToc: "false"
 ---
 ---
 title: Нормативная база
