@@ -170,13 +170,8 @@ export const defaultListPageLayout: PageLayout = {
         
         return nameA.localeCompare(nameB, "ru", { numeric: true, sensitivity: 'base' });
       },
-      filterFn: (node) => {
-        // return node.name !== "index"
-      // },
       mapFn: (node) => {
-      //   if (node.displayName) {
           node.displayName = node.displayName.replace(/^\d+_/, "")
-        }
         return node
       },
     }),
