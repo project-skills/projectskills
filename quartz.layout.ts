@@ -171,7 +171,9 @@ export const defaultListPageLayout: PageLayout = {
         return nameA.localeCompare(nameB, "ru", { numeric: true, sensitivity: 'base' });
       },
       mapFn: (node) => {
+              if (node.displayName) {
           node.displayName = node.displayName.replace(/^\d+_/, "")
+                      }
         return node
       },
     }),
