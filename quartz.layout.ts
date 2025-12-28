@@ -91,10 +91,10 @@ export const defaultContentPageLayout: PageLayout = {
           sensitivity: 'base'
         });
       },
-      filterFn: (node) => {
-        // Не показывать index.md файлы в навигации
-        return node.name !== "index"
-      },
+      // filterFn: (node) => {
+        // // Не показывать index.md файлы в навигации
+        // return node.name !== "index"
+      // },
       mapFn: (node) => {
         // Убираем числовые префиксы из отображения
         if (node.displayName) {
@@ -171,10 +171,10 @@ export const defaultListPageLayout: PageLayout = {
         return nameA.localeCompare(nameB, "ru", { numeric: true, sensitivity: 'base' });
       },
       filterFn: (node) => {
-        return node.name !== "index"
-      },
+        // return node.name !== "index"
+      // },
       mapFn: (node) => {
-        if (node.displayName) {
+      //   if (node.displayName) {
           node.displayName = node.displayName.replace(/^\d+_/, "")
         }
         return node
