@@ -11,9 +11,10 @@ tags: [Индекс, Навигация, Стандарты]
 ### Стандарты
 
 [[ГОСТ 34.602-2020.pdf| ГОСТ 34.602-2020]]
-[[GOST-R-ISO-MEK-12207-2010.-Protsessy-zhiznennogo-tsikla-programmnyh-sredstv.pdf]][[ГОСТ Р 59793-2021 Автоматизированн.pdf]]
+
+[[GOST-R-ISO-MEK-12207-2010.-Protsessy-zhiznennogo-tsikla-programmnyh-sredstv.pdf]]
+
+[[ГОСТ Р 59793-2021 Автоматизированн.pdf]]
 
 [[ГОСТ Р ИСО2FМЭК 15288-2005.pdf]]
 
-
-[[Нормативная база проектной деятельности]]
