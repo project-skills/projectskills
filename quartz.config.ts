@@ -99,7 +99,7 @@ const config: QuartzConfig = {
           rssLimit: 20,
           rssFullHtml: false,
         },
-        includeEmptyFiles: false,
+        includeEmptyFiles: true,
       }),
       Plugin.Assets(),
       Plugin.Static(),
