@@ -38,9 +38,6 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-<<<<<<< HEAD
-    Component.Explorer(),
-=======
     Component.Explorer({
       title: "Проводник",
       folderDefaultState: "collapsed",
@@ -106,7 +103,6 @@ export const defaultContentPageLayout: PageLayout = {
         return node
       },
     }),
->>>>>>> e0186bfc5422ac5be94a8492bbd1cbfc94357052
   ],
   right: [
     Component.Graph(),
@@ -130,9 +126,6 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-<<<<<<< HEAD
-    Component.Explorer(),
-=======
     Component.Explorer({
       title: "Проводник",
       folderDefaultState: "collapsed",
@@ -184,7 +177,6 @@ export const defaultListPageLayout: PageLayout = {
         return node
       },
     }),
->>>>>>> e0186bfc5422ac5be94a8492bbd1cbfc94357052
   ],
   right: [],
 }
